@@ -12,7 +12,7 @@
             --color-elective: #ffd166;
             --color-optional: #006d77;
             --bg-color: #282828;
-            --line-color: #F5EFEB;
+            --line-color: #282828;
             --semester-header: #2D2D2D;
         }
 
@@ -134,6 +134,7 @@
             border: 2px solid #f9f6ef;
             position: relative;
             z-index: auto;
+            
         }
 
         /* Leyenda */
@@ -200,31 +201,32 @@
         <!-- SVG para líneas de conexión -->
         <svg id="connectionsLayer"></svg>
 
-                <!-- Semestre 1 -->
+                <!-- Semestre 1 -->----------------------------------------------------------------
         <div class="semester" id="semester-1">
             <div class="semester-header">Semestre 1</div>
 
             <div class="course-container">
                 <!-- Tarjetas de cursos -->
-                <div class="course course-sepuedecursar" data-prereqs="">
+                <div class="semester-header">BA100<br>Humanidades I Base</div>
+                <div class="course course-sepuedecursar" id="BA021" data-prereqs="">
                     <div class="course-code">BA021</div>
                     <div class="course-name">Human I: Humanidades, Memoria Y Politica I</div>
                     <div class="course-credits">1</div>
                 </div>
 
-                <div class="course course-sepuedecursar" data-prereqs="">
+                <div class="course course-sepuedecursar" id="BA022" data-prereqs="">
                     <div class="course-code">BA022</div>
                     <div class="course-name">Human I: Narrativas De Lo Humano</div>
                     <div class="course-credits">2</div>
                 </div>
 
-                <div class="course course-sepuedecursar" data-prereqs="">
+                <div class="course course-sepuedecursar" id="BA023" data-prereqs="">
                     <div class="course-code">BA023</div>
                     <div class="course-name">Human I: Mediaciones En La Construccion De Mundo</div>
                     <div class="course-credits">2</div>
                 </div>
 
-                <div class="course course-aprovado" data-prereqs="">
+                <div class="course course-aprovado" id="BA172" data-prereqs="">
                     <div class="course-code">BA172</div>
                     <div class="course-name">Humanidades I</div>
                     <div class="course-credits">2</div>
@@ -237,7 +239,7 @@
                 <div class="course-credits">3</div>
             </div>
             
-            <div class="course course-aprovado" id="" data-prereqs="">
+            <div class="course course-aprovado" id="IS142" data-prereqs="">
                 <div class="course-code">IS142</div>
                 <div class="course-name">Desarrollo Del Pensamiento Logico</div>
                 <div class="course-credits">2</div>
@@ -249,30 +251,30 @@
                 <div class="course-credits">5</div>
             </div>
             
-            <div class="course course-aprovado" id="FI1001" data-prereqs="">
+            <div class="course course-aprovado" id="IS193" data-prereqs="">
                 <div class="course-code">IS193</div>
                 <div class="course-name">Introduccion A La Informatica</div>
                 <div class="course-credits">3</div>
             </div>
 
-            <div class="course course-aprovado" id="FI1001" data-prereqs="">
+            <div class="course course-aprovado" id="BU101" data-prereqs="BUA8">
                 <div class="course-code">BU101</div>
                 <div class="course-name">Deportes I</div>
                 <div class="course-credits">1</div>
             </div>
         </div>
         
-        <!-- Semestre 2 -->
+        <!-- Semestre 2 -->-----------------------------------------------------------------------------
         <div class="semester" id="semester-2">
             <div class="semester-header">Semestre 2</div>
             
-            <div class="course course-aprovado" id="CB1001" data-prereqs="">
+            <div class="course course-aprovado" id="CB242" data-prereqs="CB234">
                 <div class="course-code">CB242</div>
                 <div class="course-name">Laboratorio De Fisica I</div>
                 <div class="course-credits">2</div>
             </div>
             
-            <div class="course course-aprovado" id="CB234" data-prereqs="CB1B3">
+            <div class="course course-aprovado" id="CB234, CB2341" data-prereqs="CB1B3">
                 <div class="course-code">CB234</div>
                 <div class="course-name">Fisica I</div>
                 <div class="course-credits">4</div>
@@ -292,42 +294,81 @@
             
             <div class="course course-aprovado" id="IS284" data-prereqs="IS105">
                 <div class="course-code">IS284</div>
-                <div class="course-name">Programacion Ii</div>
+                <div class="course-name">Programacion II</div>
                 <div class="course-credits">4</div>
             </div>
+
+            <div class="course-container">
+                <!-- Tarjetas de cursos -->
+                <div class="semester-header">BU201<br>Deportes II</div>
+                <div class="course course-aprovado" id="" data-prereqs="BU101">
+                    <div class="course-code">BUA8</div>
+                    <div class="course-name">Gimnasio</div>
+                    <div class="course-credits">?</div>
+                </div>
+            </div>
+            
         </div>
         
-        <!-- Semestre 3 -->
+        <!-- Semestre 3 -->------------------------------------------------------------------------------------
         <div class="semester" id="semester-3">
             <div class="semester-header">Semestre 3</div>
             
-            <div class="course course-basic" id="CB2001" data-prereqs="CB1001">
-                <div class="course-code">CB2001</div>
-                <div class="course-name">Cálculo II</div>
-                <div class="course-credits">3</div>
+            <div class="course-container">
+                <!-- Tarjetas de cursos -->
+                <div class="semester-header">BA200<br>Humanidades II Base</div>
+                <div class="course course-aprovado" data-prereqs="">
+                    <div class="course-code">BA372</div>
+                    <div class="course-name">Humanidades II</div>
+                    <div class="course-credits">2</div>
+                </div>
+
+                <div class="course course-sepuedecursar" data-prereqs="">
+                    <div class="course-code">BA024</div>
+                    <div class="course-name">Human II: Arte, Cuerpo Y Poshumanismo</div>
+                    <div class="course-credits">4</div>
+                </div>
+
+                <div class="course course-sepuedecursar" data-prereqs="">
+                    <div class="course-code">BA025</div>
+                    <div class="course-name">Human II: Mediaciones Expresivas De Memoria Y La Politica </div>
+                    <div class="course-credits">5</div>
+                </div>
+
+                <div class="course course-sepuedecursar" data-prereqs="">
+                    <div class="course-code">BA026</div>
+                    <div class="course-name">Human II: Dispositivos De La Cultura Y Practicas Contemporaneas</div>
+                    <div class="course-credits">2</div>
+                </div>
             </div>
-            
-            <div class="course course-basic" id="CB2002" data-prereqs="CB1002">
-                <div class="course-code">CB2002</div>
-                <div class="course-name">Ecuaciones Diferenciales</div>
-                <div class="course-credits">3</div>
-            </div>
-            
-            <div class="course course-intermediate" id="HM2001" data-prereqs="HM1001">
-                <div class="course-code">HM2001</div>
-                <div class="course-name">Humanidades II</div>
+
+            <div class="course course-aprovado" id="CB342" data-prereqs="CB242">
+                <div class="course-code">CB342</div>
+                <div class="course-name">Laboratorio De Fisica Ii</div>
                 <div class="course-credits">2</div>
             </div>
             
-            <div class="course course-intermediate" id="IN2201" data-prereqs="IN1201">
-                <div class="course-code">IN2201</div>
-                <div class="course-name">Programación II</div>
+            <div class="course course-aprovado" id="CB334" data-prereqs="CB234,CB2A3,">
+                <div class="course-code">CB334</div>
+                <div class="course-name">Fisica II</div>
                 <div class="course-credits">3</div>
             </div>
             
-            <div class="course course-basic" id="FI2001" data-prereqs="FI1001">
-                <div class="course-code">FI2001</div>
-                <div class="course-name">Física II</div>
+            <div class="course course-aprovado" id="CB3A4" data-prereqs="CB2A3">
+                <div class="course-code">CB3A4</div>
+                <div class="course-name">Calculo Integral</div>
+                <div class="course-credits">4</div>
+            </div>
+            
+            <div class="course course-aprovado" id="IS304" data-prereqs="IS284">
+                <div class="course-code">IS304</div>
+                <div class="course-name">Estructura De Datos</div>
+                <div class="course-credits">4</div>
+            </div>
+            
+            <div class="course course-aprovado" id="IS323" data-prereqs="IS193">
+                <div class="course-code">IS323</div>
+                <div class="course-name">Logica</div>
                 <div class="course-credits">4</div>
             </div>
         </div>
@@ -531,11 +572,14 @@
             const svgRect = svg.getBoundingClientRect();
             
             // Calcular puntos de conexión
+            const connectionsCount = svg.querySelectorAll(`[data-start="${start.id}"]`).length;
+            const connectionOffset = 10 * connectionsCount; // Ajustar el desplazamiento según la cantidad de conexiones
+            
             const startX = startRect.left + startRect.width - svgRect.left;
-            const startY = startRect.top + startRect.height / 2 - svgRect.top;
+            const startY = startRect.top + startRect.height / 2 - svgRect.top + connectionOffset;
             
             const endX = endRect.left - svgRect.left;
-            const endY = endRect.top + endRect.height / 2 - svgRect.top;
+            const endY = endRect.top + endRect.height / 2 - svgRect.top + connectionOffset;
             
             // Crear punto de control para curva bezier
             const controlX = startX + (endX - startX) / 2;
@@ -555,7 +599,7 @@
             
             paths.forEach(path => {
                 if (path.getAttribute('data-start') === courseId || path.getAttribute('data-end') === courseId) {
-                    path.style.strokeWidth = '4px';
+                    path.style.strokeWidth = '0px';
                     path.style.stroke = '#006d77';
                 } else {
                     path.style.opacity = '0.3';
@@ -567,9 +611,9 @@
             const paths = document.querySelectorAll('.connection');
             
             paths.forEach(path => {
-                path.style.strokeWidth = '2px';
+                path.style.strokeWidth = '1px';
                 path.style.stroke = 'var(--line-color)';
-                path.style.opacity = '1';
+                path.style.opacity = '0';
             });
         }
 
@@ -582,11 +626,13 @@
             const paths = document.querySelectorAll('.connection');
             paths.forEach(path => {
                 if (path.getAttribute('data-start') === courseId || path.getAttribute('data-end') === courseId) {
-                    path.style.strokeWidth = '4px';
-                    path.style.stroke = '#00C6E6';
+                    path.style.strokeWidth = '3px';
+                    const startCourse = document.getElementById(path.getAttribute('data-start'));
+                    const courseColor = window.getComputedStyle(startCourse).borderColor;
+                    path.style.stroke = courseColor;
                     path.style.opacity = '1';
                 } else {
-                    path.style.opacity = '0.3';
+                    path.style.opacity = '0';
                 }
             });
         }
@@ -599,9 +645,9 @@
             // 2) Restaura estilo de todos los paths
             const paths = document.querySelectorAll('.connection');
             paths.forEach(path => {
-                path.style.strokeWidth = '2px';
+                path.style.strokeWidth = '1px';
                 path.style.stroke = 'var(--line-color)';
-                path.style.opacity = '1';
+                path.style.opacity = '0';
             });
         }
 
