@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Estudio Teb</title>
+    <style>
+        :root {
+            --color-aprovada: #32a852;
+            --color-sepuedecursar: #ff8c42;
+            --color-nosepuedecursar: #d9344f;
+            --color-elective: #ffd166;
+            --color-optional: #006d77;
+            --bg-color: #282828;
+            --line-color: #F5EFEB;
+            --semester-header: #2D2D2D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            padding: 20px;
+        }
+
+        .title {
+            text-align: center;
+            margin: 20px 0;
+            color: #f9f6ef;
+        }
+
+        .curriculum-container {
+            display: flex;
+            justify-content: flex-start;
+            overflow-x: auto;
+            padding: 20px 0;
+            position: relative;
+            min-height: 1000px;
+        }
+
+        path {
+            fill: none;
+            stroke: var(--line-color);
+            stroke-width: 2px;
+            transition: stroke-width 0.3s, stroke 0.3s;
+            stroke-dasharray: 0;
+            stroke-linecap: round;
+        }
+
+        /* Columnas de semestre */
+        .semester {
+            min-width: 250px;
+            width: 200px;
+            margin: 0 30px;
+            z-index: auto;
+        }
+
+        .semester-header {
+            background-color: var(--semester-header);
+            color: #f9f6ef;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 2px solid #f9f6ef;
+        }
+
+        /* Tarjetas de cursos */
+        .course {
+            background-color: #f9f6ef;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+        }
+
+        .course:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        /* Tipos de cursos */
+        .course-aprovado {
+            border: 4px solid var(--color-aprovada);
+        }
+
+        .course-sepuedecursar {
+            border: 4px solid var(--color-sepuedecursar);
+        }
+
+        .course-nosepuedecursar {
+            border: 4px solid var(--color-nosepuedecursar);
+        }
+
+        .course-code {
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #666;
+        }
+
+        .course-name {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .course-credits {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 12px;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+        }
+
+        .course-container {
+            background-color: var(--semester-header);
+            padding: 15px 15px 0 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 2px solid #f9f6ef;
+            position: relative;
+            z-index: auto;
+        }
+
+        /* Leyenda */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #f9f6ef;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+            border-radius: 3px;
+        }
+
+        /* Responsividad */
+        @media (max-width: 768px) {
+            .curriculum-container {
+                padding-bottom: 40px;
+            }
+        }
+
+        /* Líneas de conexión SVG */
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Plan de Estudios</h1>
+    
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: var(--color-aprovada);"></div>
+            <span>Aprobadas</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: var(--color-sepuedecursar);"></div>
+            <span>Se puede Cursar</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background-color: var(--color-nosepuedecursar);"></div>
+            <span>No se puede Cursar</span>
+        </div>
+    </div>
+
+    <div class="curriculum-container" id="curriculum">
+        <!-- SVG para líneas de conexión -->
+        <svg id="connectionsLayer"></svg>
+
+                <!-- Semestre 1 -->
+        <div class="semester" id="semester-1">
+            <div class="semester-header">Semestre 1</div>
+
+            <div class="course-container">
+                <!-- Tarjetas de cursos -->
+                <div class="course course-sepuedecursar" data-prereqs="">
+                    <div class="course-code">BA021</div>
+                    <div class="course-name">Human I: Humanidades, Memoria Y Politica I</div>
+                    <div class="course-credits">1</div>
+                </div>
+
+                <div class="course course-sepuedecursar" data-prereqs="">
+                    <div class="course-code">BA022</div>
+                    <div class="course-name">Human I: Narrativas De Lo Humano</div>
+                    <div class="course-credits">2</div>
+                </div>
+
+                <div class="course course-sepuedecursar" data-prereqs="">
+                    <div class="course-code">BA023</div>
+                    <div class="course-name">Human I: Mediaciones En La Construccion De Mundo</div>
+                    <div class="course-credits">2</div>
+                </div>
+
+                <div class="course course-aprovado" data-prereqs="">
+                    <div class="course-code">BA172</div>
+                    <div class="course-name">Humanidades I</div>
+                    <div class="course-credits">2</div>
+                </div>
+            </div>
+            
+            <div class="course course-aprovado" id="CB1B3" data-prereqs="">
+                <div class="course-code">CB1B3</div>
+                <div class="course-name">Matematicas Fundamentales</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-aprovado" id="" data-prereqs="">
+                <div class="course-code">IS142</div>
+                <div class="course-name">Desarrollo Del Pensamiento Logico</div>
+                <div class="course-credits">2</div>
+            </div>
+            
+            <div class="course course-aprovado" id="IS105" data-prereqs="">
+                <div class="course-code">IS105</div>
+                <div class="course-name">Programación I</div>
+                <div class="course-credits">5</div>
+            </div>
+            
+            <div class="course course-aprovado" id="FI1001" data-prereqs="">
+                <div class="course-code">IS193</div>
+                <div class="course-name">Introduccion A La Informatica</div>
+                <div class="course-credits">3</div>
+            </div>
+
+            <div class="course course-aprovado" id="FI1001" data-prereqs="">
+                <div class="course-code">BU101</div>
+                <div class="course-name">Deportes I</div>
+                <div class="course-credits">1</div>
+            </div>
+        </div>
+        
+        <!-- Semestre 2 -->
+        <div class="semester" id="semester-2">
+            <div class="semester-header">Semestre 2</div>
+            
+            <div class="course course-aprovado" id="CB1001" data-prereqs="">
+                <div class="course-code">CB242</div>
+                <div class="course-name">Laboratorio De Fisica I</div>
+                <div class="course-credits">2</div>
+            </div>
+            
+            <div class="course course-aprovado" id="CB234" data-prereqs="CB1B3">
+                <div class="course-code">CB234</div>
+                <div class="course-name">Fisica I</div>
+                <div class="course-credits">4</div>
+            </div>
+            
+            <div class="course course-aprovado" id="CB2A3" data-prereqs="CB1B3">
+                <div class="course-code">CB2A3</div>
+                <div class="course-name">Calculo Diferencial</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-aprovado" id="CB223" data-prereqs="CB1B3">
+                <div class="course-code">CB223</div>
+                <div class="course-name">Algebra Lineal</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-aprovado" id="IS284" data-prereqs="IS105">
+                <div class="course-code">IS284</div>
+                <div class="course-name">Programacion Ii</div>
+                <div class="course-credits">4</div>
+            </div>
+        </div>
+        
+        <!-- Semestre 3 -->
+        <div class="semester" id="semester-3">
+            <div class="semester-header">Semestre 3</div>
+            
+            <div class="course course-basic" id="CB2001" data-prereqs="CB1001">
+                <div class="course-code">CB2001</div>
+                <div class="course-name">Cálculo II</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-basic" id="CB2002" data-prereqs="CB1002">
+                <div class="course-code">CB2002</div>
+                <div class="course-name">Ecuaciones Diferenciales</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-intermediate" id="HM2001" data-prereqs="HM1001">
+                <div class="course-code">HM2001</div>
+                <div class="course-name">Humanidades II</div>
+                <div class="course-credits">2</div>
+            </div>
+            
+            <div class="course course-intermediate" id="IN2201" data-prereqs="IN1201">
+                <div class="course-code">IN2201</div>
+                <div class="course-name">Programación II</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-basic" id="FI2001" data-prereqs="FI1001">
+                <div class="course-code">FI2001</div>
+                <div class="course-name">Física II</div>
+                <div class="course-credits">4</div>
+            </div>
+        </div>
+        
+        <!-- Semestre 4 -->
+        <div class="semester" id="semester-4">
+            <div class="semester-header">Semestre 4</div>
+            
+            <div class="course course-basic" id="CB3001" data-prereqs="CB2001">
+                <div class="course-code">CB3001</div>
+                <div class="course-name">Estadística</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-intermediate" id="EL3001" data-prereqs="FI2001,CB2002">
+                <div class="course-code">EL3001</div>
+                <div class="course-name">Electrónica Básica</div>
+                <div class="course-credits">4</div>
+            </div>
+            
+            <div class="course course-intermediate" id="IN3201" data-prereqs="IN2201">
+                <div class="course-code">IN3201</div>
+                <div class="course-name">Estructuras de Datos</div>
+                <div class="course-credits">4</div>
+            </div>
+            
+            <div class="course course-intermediate" id="IN3301" data-prereqs="IN2201">
+                <div class="course-code">IN3301</div>
+                <div class="course-name">Arquitectura de Computadoras</div>
+                <div class="course-credits">3</div>
+            </div>
+        </div>
+        
+        <!-- Semestre 5 -->
+        <div class="semester" id="semester-5">
+            <div class="semester-header">Semestre 5</div>
+            
+            <div class="course course-elective" id="EL4001" data-prereqs="EL3001">
+                <div class="course-code">EL4001</div>
+                <div class="course-name">Electrónica Digital</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-advanced" id="IN4201" data-prereqs="IN3201">
+                <div class="course-code">IN4201</div>
+                <div class="course-name">Bases de Datos</div>
+                <div class="course-credits">4</div>
+            </div>
+            
+            <div class="course course-advanced" id="IN4301" data-prereqs="IN3301">
+                <div class="course-code">IN4301</div>
+                <div class="course-name">Sistemas Operativos</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-intermediate" id="IN4401" data-prereqs="IN3201">
+                <div class="course-code">IN4401</div>
+                <div class="course-name">Análisis de Algoritmos</div>
+                <div class="course-credits">3</div>
+            </div>
+        </div>
+        
+        <!-- Semestre 6 -->
+        <div class="semester" id="semester-6">
+            <div class="semester-header">Semestre 6</div>
+            
+            <div class="course course-advanced" id="IN5201" data-prereqs="IN4201">
+                <div class="course-code">IN5201</div>
+                <div class="course-name">Desarrollo Web</div>
+                <div class="course-credits">4</div>
+            </div>
+            
+            <div class="course course-advanced" id="IN5301" data-prereqs="IN4301,IN4201">
+                <div class="course-code">IN5301</div>
+                <div class="course-name">Redes de Computadoras</div>
+                <div class="course-credits">4</div>
+            </div>
+            
+            <div class="course course-elective" id="EL5001" data-prereqs="EL4001">
+                <div class="course-code">EL5001</div>
+                <div class="course-name">Sistemas Embebidos</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-optional" id="OP5001" data-prereqs="">
+                <div class="course-code">OP5001</div>
+                <div class="course-name">Optativa I</div>
+                <div class="course-credits">3</div>
+            </div>
+        </div>
+        
+        <!-- Semestre 7 -->
+        <div class="semester" id="semester-7">
+            <div class="semester-header">Semestre 7</div>
+            
+            <div class="course course-advanced" id="IN6201" data-prereqs="IN5201">
+                <div class="course-code">IN6201</div>
+                <div class="course-name">Ingeniería de Software</div>
+                <div class="course-credits">4</div>
+            </div>
+            
+            <div class="course course-advanced" id="IN6301" data-prereqs="IN5301">
+                <div class="course-code">IN6301</div>
+                <div class="course-name">Seguridad Informática</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-intermediate" id="IN6401" data-prereqs="IN4401">
+                <div class="course-code">IN6401</div>
+                <div class="course-name">Inteligencia Artificial</div>
+                <div class="course-credits">4</div>
+            </div>
+            
+            <div class="course course-optional" id="OP6001" data-prereqs="">
+                <div class="course-code">OP6001</div>
+                <div class="course-name">Optativa II</div>
+                <div class="course-credits">3</div>
+            </div>
+        </div>
+        
+        <!-- Semestre 8 -->
+        <div class="semester" id="semester-8">
+            <div class="semester-header">Semestre 8</div>
+            
+            <div class="course course-advanced" id="IN7201" data-prereqs="IN6201">
+                <div class="course-code">IN7201</div>
+                <div class="course-name">Proyecto Final</div>
+                <div class="course-credits">6</div>
+            </div>
+            
+            <div class="course course-elective" id="EL7001" data-prereqs="IN6401">
+                <div class="course-code">EL7001</div>
+                <div class="course-name">Machine Learning</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-advanced" id="IN7301" data-prereqs="IN6301">
+                <div class="course-code">IN7301</div>
+                <div class="course-name">Computación en la Nube</div>
+                <div class="course-credits">3</div>
+            </div>
+            
+            <div class="course course-optional" id="OP7001" data-prereqs="">
+                <div class="course-code">OP7001</div>
+                <div class="course-name">Optativa III</div>
+                <div class="course-credits">3</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener el SVG donde se dibujarán las conexiones
+            const svgElement = document.getElementById('connectionsLayer');
+            
+            // Crear líneas de conexión entre cursos basados en prerrequisitos
+            const courses = document.querySelectorAll('.course');
+            
+            courses.forEach(course => {
+                const prereqs = course.getAttribute('data-prereqs');
+                if (prereqs) {
+                    const prereqIds = prereqs.split(',');
+                    
+                    prereqIds.forEach(prereqId => {
+                        if (prereqId.trim() !== "") {
+                            const prereqElement = document.getElementById(prereqId.trim());
+                            if (prereqElement) {
+                                connectElements(svgElement, prereqElement, course);
+                            }
+                        }
+                    });
+                }
+                
+                // Highlight de conexiones al pasar el cursor
+                course.addEventListener('mouseenter', function() {
+                    highlightConnections(course.id);
+                });
+                
+                course.addEventListener('mouseleave', function() {
+                    resetConnections();
+                });
+            });
+            
+            // Ajustar tamaño del SVG
+            updateSVGSize();
+            window.addEventListener('resize', updateSVGSize);
+        });
+        
+        function updateSVGSize() {
+            const container = document.getElementById('curriculum');
+            const svg = document.getElementById('connectionsLayer');
+            
+            svg.setAttribute('width', container.scrollWidth);
+            svg.setAttribute('height', container.scrollHeight);
+        }
+        
+        function connectElements(svg, start, end) {
+            // Obtener posiciones de los elementos
+            const startRect = start.getBoundingClientRect();
+            const endRect = end.getBoundingClientRect();
+            const svgRect = svg.getBoundingClientRect();
+            
+            // Calcular puntos de conexión
+            const startX = startRect.left + startRect.width - svgRect.left;
+            const startY = startRect.top + startRect.height / 2 - svgRect.top;
+            
+            const endX = endRect.left - svgRect.left;
+            const endY = endRect.top + endRect.height / 2 - svgRect.top;
+            
+            // Crear punto de control para curva bezier
+            const controlX = startX + (endX - startX) / 2;
+            
+            // Crear path SVG
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', `M${startX},${startY} C${controlX},${startY} ${controlX},${endY} ${endX},${endY}`);
+            path.setAttribute('class', 'connection');
+            path.setAttribute('data-start', start.id);
+            path.setAttribute('data-end', end.id);
+            
+            svg.appendChild(path);
+        }
+        
+        function highlightConnections(courseId) {
+            const paths = document.querySelectorAll('.connection');
+            
+            paths.forEach(path => {
+                if (path.getAttribute('data-start') === courseId || path.getAttribute('data-end') === courseId) {
+                    path.style.strokeWidth = '4px';
+                    path.style.stroke = '#006d77';
+                } else {
+                    path.style.opacity = '0.3';
+                }
+            });
+        }
+        
+        function resetConnections() {
+            const paths = document.querySelectorAll('.connection');
+            
+            paths.forEach(path => {
+                path.style.strokeWidth = '2px';
+                path.style.stroke = 'var(--line-color)';
+                path.style.opacity = '1';
+            });
+        }
+
+        function highlightConnections(courseId) {
+            const svg = document.getElementById('connectionsLayer');
+            // 1) Sube TODO el SVG por encima de las .course
+            svg.style.zIndex = '3';
+
+            // 2) Resalta los paths como ya haces
+            const paths = document.querySelectorAll('.connection');
+            paths.forEach(path => {
+                if (path.getAttribute('data-start') === courseId || path.getAttribute('data-end') === courseId) {
+                    path.style.strokeWidth = '4px';
+                    path.style.stroke = '#00C6E6';
+                    path.style.opacity = '1';
+                } else {
+                    path.style.opacity = '0.3';
+                }
+            });
+        }
+
+        function resetConnections() {
+            const svg = document.getElementById('connectionsLayer');
+            // 1) Baja el SVG de nuevo bajo las tarjetas
+            svg.style.zIndex = '1';
+
+            // 2) Restaura estilo de todos los paths
+            const paths = document.querySelectorAll('.connection');
+            paths.forEach(path => {
+                path.style.strokeWidth = '2px';
+                path.style.stroke = 'var(--line-color)';
+                path.style.opacity = '1';
+            });
+        }
+
+    </script>
+</body>
+</html>
